@@ -1,0 +1,77 @@
+html,
+body,
+#__next {
+  height: 100%;
+}
+
+.circle {
+  position: relative;
+  border: 0.5rem solid grey;
+  background-color: white;
+  display: flex;
+  align-self: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  border-radius: 50%;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.input-img {
+  display: block;
+  z-index: 2;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.animate {
+  background-color: salmon;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  animation: grow-bg 1s linear backwards;
+}
+
+.inner-circle {
+  position: absolute;
+  opacity: 0.8;
+  z-index: 5;
+}
+
+@keyframes grow-bg {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.player-container,
+.overlay {
+  grid-area: 1 / 1 !important;
+}
+.overlay {
+  z-index: 2;
+}
+
+.player-container {
+  width: 100%;
+  height: 100%;
+}
+
+.card {
+  width: 18rem;
+  transition: 0.2s;
+  min-height: 20rem;
+}
+
+.card:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
