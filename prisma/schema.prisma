@@ -44,6 +44,7 @@ model User {
   sessions      Session[]
   playlists     Playlist[]
   timers        Timer[]
+  configs       Config[]
 }
 
 model VerificationToken {
@@ -91,4 +92,18 @@ type Timer {
   name     String
   playtime Int
   default  Boolean
+}
+
+type Config {
+  name             String
+  loadOnInit       Boolean
+  inputOptions     InputOptions
+  loadPlaylistPage String?
+}
+
+type InputOptions {
+  method        String?
+  size          String
+  dwellTime     Int
+  fixedPosition Boolean
 }
