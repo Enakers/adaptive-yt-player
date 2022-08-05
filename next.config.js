@@ -19,7 +19,8 @@ const nextConfig = {
             ],
             "connect-src": ["'self'", "https://www.googleapis.com"],
             "script-src": ["'self'", "https://www.youtube.com"],
-            "frame-src": ["'self'", "https://www.youtube-nocookie.com"]
+            "frame-src": ["'self'", "https://www.youtube-nocookie.com"],
+            "style-src": ["'self'", "sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="]
           },
           permissionsPolicy: {
             fullscreen: ["'self'"]
