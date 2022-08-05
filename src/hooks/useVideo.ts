@@ -1,7 +1,7 @@
-import {Video} from '@prisma/client';
-import {ParsedUrlQuery} from 'querystring';
-import {useEffect, useState} from 'react';
-import {useStore} from '~/store/StoreProvider';
+import {Video} from "@prisma/client";
+import {ParsedUrlQuery} from "querystring";
+import {useEffect, useState} from "react";
+import {useStore} from "~/store/StoreProvider";
 
 const useVideo = (routerQuery: ParsedUrlQuery) => {
   const {playlistStore} = useStore();
@@ -9,7 +9,6 @@ const useVideo = (routerQuery: ParsedUrlQuery) => {
   const [video, setVideo] = useState<Video | null>(null);
 
   useEffect(() => {
-    console.log(routerQuery);
     setLoading(true);
     playlistStore
       .findVideo(routerQuery.videoId as string, routerQuery.playlistId as string)
