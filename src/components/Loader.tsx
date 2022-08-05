@@ -1,9 +1,13 @@
-import { Spinner } from 'react-bootstrap';
+import {Spinner} from "react-bootstrap";
 
-function Loader() {
+interface Props {
+  colour?: string;
+}
+
+function Loader({colour}: Props) {
   return (
     <div className="d-flex justify-content-center align-items-center min-vh-100">
-      <Spinner animation="border" />
+      <Spinner animation="border" variant={colour} />
     </div>
   );
 }
