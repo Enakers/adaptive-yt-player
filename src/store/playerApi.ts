@@ -1,11 +1,11 @@
-import {Video} from '@prisma/client';
-import {makeAutoObservable} from 'mobx';
-import Router from 'next/router';
-import {FullScreenHandle} from 'react-full-screen';
-import YouTubePlayer from 'yt-player';
-import RootStore from './rootStore';
+import {Video} from "@prisma/client";
+import {makeAutoObservable} from "mobx";
+import Router from "next/router";
+import {FullScreenHandle} from "react-full-screen";
+import YouTubePlayer from "yt-player";
+import RootStore from "./rootStore";
 
-const VALID_CODES = ['Enter', 'Space'];
+const VALID_CODES = ["Enter", "Space"];
 
 export default class PlayerApi {
   private player?: YouTubePlayer;
@@ -15,6 +15,7 @@ export default class PlayerApi {
   private videoTimerPauseTime?: number;
   private pauseTimeout?: NodeJS.Timeout;
   isPlaying = false;
+  isBuffering = false;
   ready = false;
   started = false;
   playlistVideoIndex = 0;
@@ -29,11 +30,11 @@ export default class PlayerApi {
   }
 
   get isSwitchInput() {
-    return this.root.inputStore.inputOptions.method === 'switch';
+    return this.root.inputStore.inputOptions.method === "switch";
   }
 
   setTimer = (name: string) => {
-    if (name === 'custom') {
+    if (name === "custom") {
       this.resetVideoTimer();
       return;
     }
@@ -47,7 +48,7 @@ export default class PlayerApi {
     this.player = new YouTubePlayer(div, {
       keyboard: false,
       fullscreen: false,
-      host: 'https://www.youtube-nocookie.com',
+      host: "https://www.youtube-nocookie.com",
       related: false,
       modestBranding: true,
       annotations: false
@@ -55,11 +56,13 @@ export default class PlayerApi {
 
     this.handleFullscreen = handleFullscreen;
 
-    document.addEventListener('keyup', this.onKeyup);
-    this.player.on('playing', this.onPlay);
-    this.player.on('paused', this.onPause);
-    this.player.on('timeupdate', this.onTimeUpdate);
-    this.player.on('ended', this.onEnded);
+    document.addEventListener("keyup", this.onKeyup);
+    this.player.on("playing", this.onPlay);
+    this.player.on("paused", this.onPause);
+    this.player.on("timeupdate", this.onTimeUpdate);
+    this.player.on("ended", this.onEnded);
+    this.player.on("buffering", () => (this.isBuffering = true));
+    this.player.on("cued", () => (this.isBuffering = false));
 
     this.video = video;
     if (video.timers) this.useVideoTimers = true;
@@ -67,7 +70,7 @@ export default class PlayerApi {
     this.ready = true;
 
     return () => {
-      document.removeEventListener('keyup', this.onKeyup);
+      document.removeEventListener("keyup", this.onKeyup);
       this.player?.destroy();
       this.ready = false;
     };
@@ -83,7 +86,7 @@ export default class PlayerApi {
     if (!this.started) return;
 
     // TODO this is not triggered while fullscreen. Fullscreen esc to exit overrides
-    if (e.code === 'Escape') {
+    if (e.code === "Escape") {
       this.player?.pause();
       this.started = false;
       return;
@@ -92,18 +95,18 @@ export default class PlayerApi {
     if (
       !this.isSwitchInput ||
       !VALID_CODES.includes(e.code) ||
-      this.player?.getState() === 'buffering'
+      this.player?.getState() === "buffering"
     ) {
       return;
     }
 
-    if (e.code === 'Space' && this.root.inputStore.loadedConfig?.loadPlaylistPage) {
+    if (e.code === "Space" && this.root.inputStore.loadedConfig?.loadPlaylistPage) {
       this.onPause();
       Router.push(`/playlist/${this.root.inputStore.loadedConfig?.loadPlaylistPage}`);
       return;
     }
 
-    if (this.player?.getState() === 'playing' && this.timer.playtime === 0) {
+    if (this.player?.getState() === "playing" && this.timer.playtime === 0) {
       this.player?.pause();
       return;
     }
@@ -113,6 +116,7 @@ export default class PlayerApi {
 
   private onPlay = () => {
     this.isPlaying = true;
+    this.isBuffering = false;
     if (this.useVideoTimers || this.timer.playtime === 0) return;
 
     this.pauseTimeout = setTimeout(() => this.player?.pause(), this.timer.playtime);
