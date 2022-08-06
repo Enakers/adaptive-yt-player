@@ -26,7 +26,9 @@ const nextConfig = {
               ? []
               : ["'self'", "'sha256-+ggG/X5/BziMV+92NuWVuGj96UXUoD0vzVERtSh8Nv4='"]
           },
-          xssProtection: false
+          permissionsPolicy: {
+            fullscreen: ["'self'"]
+          }
         }),
         {
           key: "Strict-Transport-Security",
