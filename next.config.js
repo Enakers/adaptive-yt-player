@@ -29,7 +29,7 @@ const nextConfig = {
                   "'sha256-+ggG/X5/BziMV+92NuWVuGj96UXUoD0vzVERtSh8Nv4='",
                   "sha256-KkLBTP2id6c7TuTX4KBzGRSZ1GQyIsiVeQF9yWOfUR0="
                 ],
-            "form-src": ["'self'", "https://yt.enak-nalla.dev/api/auth/signin/google"]
+            "form-action": ["'self'", "https://yt.enak-nalla.dev/api/auth/signin/google"]
           },
           permissionsPolicy: {
             fullscreen: ["'self'"]
