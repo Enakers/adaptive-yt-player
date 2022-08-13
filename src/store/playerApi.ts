@@ -42,7 +42,10 @@ export default class PlayerApi {
     this.root.timerStore.setActiveTimer(name);
   };
 
-  setStarted = () => (this.started = true);
+  setStarted = () => {
+    this.started = true;
+    if (!this.handleFullscreen?.active) this.handleFullscreen?.enter();
+  };
 
   setupPlayer(div: HTMLDivElement, video: Video, handleFullscreen: FullScreenHandle) {
     this.player = new YouTubePlayer(div, {
@@ -79,7 +82,7 @@ export default class PlayerApi {
   handlePlay = () => {
     this.incrementVideoTimerIndex();
     this.player?.play();
-    this.handleFullscreen?.enter();
+    if (!this.handleFullscreen?.active) this.handleFullscreen?.enter();
   };
 
   private onKeyup = (e: KeyboardEvent) => {
